@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /home/phuongdtl-ba/test-skill -type f \\\\\\( -name \"*.md\" -o -name \"*.json\" \\\\\\) -not -path \"*/node_modules/*\" | head -50 && echo \"---SKILLS---\" && ls /home/phuongdtl-ba/test-skill/.claude/skills/ 2>/dev/null && echo \"---GLOBAL SKILLS---\" && ls /home/phuongdtl-ba/.claude/skills/ 2>/dev/null)",
+      "Read(//home/phuongdtl-ba/.claude/skills/**)",
+      "Bash(git -C /home/phuongdtl-ba/test-skill config user.name)",
+      "Bash(git -C /home/phuongdtl-ba/test-skill config user.email)"
+    ]
+  }
+}

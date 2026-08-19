@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Split Order — Flow 1: Chọn sản phẩm tách (Mobile 375)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;background:#f0f0f0;color:#000;padding:24px}
+h1{font-size:16px;font-weight:700;margin-bottom:4px}
+.subtitle{font-size:12px;color:#888;margin-bottom:24px}
+.wf-rows{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start}
+.wf-screen{width:375px;background:#fff;border:2px solid #000;border-radius:4px;overflow:hidden;flex-shrink:0}
+.wf-screen-label{background:#000;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;letter-spacing:.5px}
+.screen-body{padding:16px}
+/* Topbar */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid #ccc;margin:-16px -16px 16px}
+.topbar-title{font-weight:700;font-size:15px}
+.back-nav{font-size:13px;color:#000;cursor:pointer}
+/* Badge */
+.badge{display:inline-block;font-size:10px;font-weight:700;border:1px solid #000;border-radius:2px;padding:1px 5px;margin-left:6px;vertical-align:middle}
+.badge-active{background:#fff}
+.badge-combo{background:#f0f0f0}
+/* Info row */
+.info-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px}
+.info-label{color:#888}
+/* Section header */
+.section-hd{font-size:11px;font-weight:700;color:#888;letter-spacing:.5px;margin:14px 0 8px;text-transform:uppercase}
+/* Item list */
+.item-list{border:1px solid #ccc;border-radius:4px;overflow:hidden;margin-bottom:16px}
+.item-row{display:flex;align-items:center;padding:10px 12px;border-bottom:1px solid #f0f0f0;gap:8px}
+.item-row:last-child{border-bottom:none}
+.item-row input[type=checkbox]{width:16px;height:16px;flex-shrink:0}
+.item-name{flex:1;font-size:13px;font-weight:600}
+.item-sub{font-size:11px;color:#888}
+.item-price{font-size:13px;text-align:right;min-width:70px}
+.item-qty-col{font-size:12px;color:#888;min-width:30px;text-align:center}
+/* Stepper */
+.stepper{display:flex;align-items:center;gap:4px;border:1px solid #ccc;border-radius:4px;overflow:hidden}
+.stepper button{width:28px;height:28px;background:#f0f0f0;border:none;font-size:16px;cursor:pointer;line-height:1}
+.stepper input{width:36px;height:28px;border:none;border-left:1px solid #ccc;border-right:1px solid #ccc;text-align:center;font-size:13px}
+/* Disabled state */
+.stepper.disabled{opacity:.4;pointer-events:none}
+/* Summary sticky */
+.summary-bar{background:#f0f0f0;border:1px solid #ccc;border-radius:4px;padding:10px 12px;margin-bottom:12px}
+.summary-bar .row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:3px}
+.summary-bar .row.total{font-weight:700;font-size:14px;border-top:1px solid #ccc;padding-top:6px;margin-top:6px}
+/* Buttons */
+.btn-primary{display:block;width:100%;padding:12px;background:#000;color:#fff;border:none;border-radius:4px;font-size:14px;font-weight:700;cursor:pointer;text-align:center;margin-bottom:8px}
+.btn-secondary{display:block;width:100%;padding:12px;background:#fff;color:#000;border:2px solid #000;border-radius:4px;font-size:14px;font-weight:700;cursor:pointer;text-align:center}
+.btn-disabled{opacity:.35;pointer-events:none}
+/* Tooltip note */
+.hint-text{font-size:11px;color:#888;margin-top:4px;text-align:center}
+/* Alert */
+.alert{border-radius:4px;padding:10px 12px;font-size:12px;margin-bottom:12px;border:1px solid}
+.alert-warn{border-color:#888;background:#f0f0f0}
+.alert-icon{font-weight:700;margin-right:4px}
+/* Divider */
+.divider{border:none;border-top:1px solid #f0f0f0;margin:12px 0}
+/* Desc table */
+.desc-section{margin-top:48px}
+.desc-section h2{font-size:14px;font-weight:700;margin-bottom:12px;border-bottom:2px solid #000;padding-bottom:4px}
+table.wf-desc{width:100%;border-collapse:collapse;font-size:12px}
+table.wf-desc th{background:#000;color:#fff;padding:6px 8px;text-align:left;font-weight:700}
+table.wf-desc td{padding:6px 8px;border-bottom:1px solid #f0f0f0;vertical-align:top}
+table.wf-desc tr.screen-hd td{background:#f0f0f0;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase}
+table.wf-desc tr:hover td{background:#f0f0f0}
+</style>
+</head>
+<body>
+
+<h1>Tách đơn — Flow 1: Chọn sản phẩm tách</h1>
+<p class="subtitle">Feature: split-order · Device: Mobile 375px · B&amp;W Wireframe · 2026-07-21</p>
+
+<div class="wf-rows">
+
+  <!-- SCREEN 1: Chi tiết đơn hàng -->
+  <div class="wf-screen" id="s1">
+    <div class="wf-screen-label">S1 · Chi tiết đơn hàng (Điểm vào)</div>
+    <div class="screen-body">
+      <div class="topbar">
+        <span class="back-nav">← Danh sách</span>
+        <span class="topbar-title">Chi tiết đơn</span>
+        <span style="width:60px"></span>
+      </div>
+
+      <!-- Order info -->
+      <div class="info-row"><span class="info-label">Mã đơn</span><span><strong>HD-20240721-001</strong></span></div>
+      <div class="info-row"><span class="info-label">Bàn</span><span>Bàn 05 — Tầng 1</span></div>
+      <div class="info-row"><span class="info-label">Thời gian tạo</span><span>21/07/2026 · 11:30</span></div>
+      <div class="info-row"><span class="info-label">Trạng thái</span><span><span class="badge badge-active">ACTIVE</span></span></div>
+
+      <div class="divider"></div>
+      <div class="section-hd">Danh sách sản phẩm</div>
+
+      <div class="item-list">
+        <div class="item-row">
+          <div style="flex:1">
+            <div class="item-name">Phở Bò Đặc Biệt</div>
+            <div class="item-sub">x2 · 89.000đ</div>
+          </div>
+          <div class="item-price">178.000đ</div>
+        </div>
+        <div class="item-row">
+          <div style="flex:1">
+            <div class="item-name">Combo Bò Bít Tết <span class="badge badge-combo">COMBO</span></div>
+            <div class="item-sub">x1 · 185.000đ</div>
+          </div>
+          <div class="item-price">185.000đ</div>
+        </div>
+        <div class="item-row">
+          <div style="flex:1">
+            <div class="item-name">Nước Cam Vắt</div>
+            <div class="item-sub">x3 · 35.000đ</div>
+          </div>
+          <div class="item-price">105.000đ</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Tổng tiền -->
+      <div class="info-row"><span class="info-label">Tạm tính</span><span>468.000đ</span></div>
+      <div class="info-row"><span class="info-label">Giảm giá (10%)</span><span>-46.800đ</span></div>
+      <div class="info-row"><span class="info-label">Thuế VAT (8%)</span><span>33.696đ</span></div>
+      <div class="info-row"><span class="info-label">Phí dịch vụ (5%)</span><span>21.060đ</span></div>
+      <div class="info-row" style="font-weight:700;font-size:15px;margin-top:6px;border-top:1px solid #ccc;padding-top:8px">
+        <span>Cần thanh toán</span><span>475.956đ</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Action buttons -->
+      <button class="btn-primary">Tách đơn</button>
+      <button class="btn-secondary">Thanh toán</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 1b: Chi tiết đơn hàng — Trạng thái nút disabled -->
+  <div class="wf-screen" id="s1b">
+    <div class="wf-screen-label">S1b · Chi tiết đơn — Nút disabled (edge case)</div>
+    <div class="screen-body">
+      <div class="topbar">
+        <span class="back-nav">← Danh sách</span>
+        <span class="topbar-title">Chi tiết đơn</span>
+        <span style="width:60px"></span>
+      </div>
+      <div class="info-row"><span class="info-label">Mã đơn</span><span><strong>HD-20240721-002</strong></span></div>
+      <div class="info-row"><span class="info-label">Trạng thái</span><span><span class="badge badge-active">ACTIVE</span></span></div>
+      <div class="divider"></div>
+      <div class="section-hd">Danh sách sản phẩm</div>
+      <div class="item-list">
+        <div class="item-row">
+          <div style="flex:1">
+            <div class="item-name">Cà Phê Sữa Đá</div>
+            <div class="item-sub">x1 · 45.000đ</div>
+          </div>
+          <div class="item-price">45.000đ</div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="info-row" style="font-weight:700"><span>Cần thanh toán</span><span>45.000đ</span></div>
+      <div class="divider"></div>
+      <button class="btn-primary btn-disabled" title="Đơn hàng cần ít nhất 2 sản phẩm để tách.">Tách đơn</button>
+      <p class="hint-text">⚠ Đơn hàng cần ít nhất 2 sản phẩm để tách.</p>
+      <button class="btn-secondary" style="margin-top:8px">Thanh toán</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: Chọn sản phẩm tách -->
+  <div class="wf-screen" id="s2">
+    <div class="wf-screen-label">S2 · Chọn sản phẩm tách (Bottom Sheet)</div>
+    <div class="screen-body">
+      <div class="topbar">
+        <span class="back-nav">← Huỷ</span>
+        <span class="topbar-title">Tách đơn</span>
+        <span style="font-size:11px;color:#888">HD-001</span>
+      </div>
+
+      <p style="font-size:12px;color:#888;margin-bottom:12px">Chọn sản phẩm và số lượng muốn tách sang đơn mới.</p>
+
+      <div class="section-hd">Sản phẩm trong đơn gốc</div>
+
+      <div class="item-list">
+        <!-- Row 1: unchecked -->
+        <div class="item-row" style="flex-direction:column;align-items:stretch;gap:6px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="checkbox" id="chk1">
+            <label for="chk1" style="flex:1;font-size:13px;font-weight:600">Phở Bò Đặc Biệt</label>
+            <span class="item-sub">SL gốc: 2</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-left:24px">
+            <span class="item-sub">89.000đ / cái</span>
+            <div class="stepper disabled">
+              <button>−</button>
+              <input type="text" value="0">
+              <button>+</button>
+            </div>
+          </div>
+        </div>
+        <!-- Row 2: combo checked -->
+        <div class="item-row" style="flex-direction:column;align-items:stretch;gap:6px;background:#f0f0f0">
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="checkbox" id="chk2" checked>
+            <label for="chk2" style="flex:1;font-size:13px;font-weight:600">Combo Bò Bít Tết <span class="badge badge-combo">COMBO</span></label>
+            <span class="item-sub">SL gốc: 1</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-left:24px">
+            <span class="item-sub">185.000đ / combo</span>
+            <div class="stepper">
+              <button>−</button>
+              <input type="text" value="1">
+              <button>+</button>
+            </div>
+          </div>
+          <p style="font-size:10px;color:#888;padding-left:24px">(!) Combo tách nguyên bộ, không tách thành phần</p>
+        </div>
+        <!-- Row 3: unchecked -->
+        <div class="item-row" style="flex-direction:column;align-items:stretch;gap:6px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="checkbox" id="chk3">
+            <label for="chk3" style="flex:1;font-size:13px;font-weight:600">Nước Cam Vắt</label>
+            <span class="item-sub">SL gốc: 3</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-left:24px">
+            <span class="item-sub">35.000đ / ly</span>
+            <div class="stepper disabled">
+              <button>−</button>
+              <input type="text" value="0">
+              <button>+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary bar -->
+      <div class="summary-bar">
+        <div class="row"><span>Đã chọn để tách</span><span>1 sản phẩm</span></div>
+        <div class="row"><span>Tạm tính đơn mới</span><span>185.000đ</span></div>
+        <div class="row total"><span>Đơn gốc còn lại</span><span>283.000đ</span></div>
+      </div>
+
+      <button class="btn-primary">Xem Preview tài chính →</button>
+      <button class="btn-secondary" style="margin-top:8px">Huỷ</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 2b: Chọn sản phẩm — lỗi chọn toàn bộ -->
+  <div class="wf-screen" id="s2b">
+    <div class="wf-screen-label">S2b · Chọn SP tách — lỗi chọn toàn bộ (edge case)</div>
+    <div class="screen-body">
+      <div class="topbar">
+        <span class="back-nav">← Huỷ</span>
+        <span class="topbar-title">Tách đơn</span>
+        <span style="font-size:11px;color:#888">HD-001</span>
+      </div>
+
+      <div class="alert alert-warn">
+        <span class="alert-icon">⚠</span>Đơn gốc phải giữ lại ít nhất 1 sản phẩm. Bỏ chọn ít nhất 1 món.
+      </div>
+
+      <div class="item-list">
+        <div class="item-row" style="flex-direction:column;align-items:stretch;gap:6px;background:#f0f0f0">
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="checkbox" checked id="chk4">
+            <label for="chk4" style="flex:1;font-size:13px;font-weight:600">Phở Bò Đặc Biệt</label>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-left:24px">
+            <span class="item-sub">89.000đ · SL gốc: 2</span>
+            <div class="stepper"><button>−</button><input type="text" value="2"><button>+</button></div>
+          </div>
+        </div>
+        <div class="item-row" style="flex-direction:column;align-items:stretch;gap:6px;background:#f0f0f0">
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="checkbox" checked id="chk5">
+            <label for="chk5" style="flex:1;font-size:13px;font-weight:600">Combo Bò Bít Tết <span class="badge badge-combo">COMBO</span></label>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-left:24px">
+            <span class="item-sub">185.000đ · SL gốc: 1</span>
+            <div class="stepper"><button>−</button><input type="text" value="1"><button>+</button></div>
+          </div>
+        </div>
+        <div class="item-row" style="flex-direction:column;align-items:stretch;gap:6px;background:#f0f0f0">
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="checkbox" checked id="chk6">
+            <label for="chk6" style="flex:1;font-size:13px;font-weight:600">Nước Cam Vắt</label>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-left:24px">
+            <span class="item-sub">35.000đ · SL gốc: 3</span>
+            <div class="stepper"><button>−</button><input type="text" value="3"><button>+</button></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primary btn-disabled">Xem Preview tài chính →</button>
+      <p class="hint-text">Bỏ chọn ít nhất 1 sản phẩm để tiếp tục.</p>
+      <button class="btn-secondary" style="margin-top:8px">Huỷ</button>
+    </div>
+  </div>
+
+</div><!-- end wf-rows -->
+
+<!-- DESC TABLE -->
+<div class="desc-section">
+  <h2>Bảng mô tả màn hình — Flow 1</h2>
+  <table class="wf-desc">
+    <thead>
+      <tr><th>#</th><th>Items</th><th>Control type</th><th>Data type</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr class="screen-hd"><td colspan="5">Screen 1: Chi tiết đơn hàng (order-detail)</td></tr>
+      <tr><td>1</td><td>Nút Back</td><td>Link</td><td>Click</td><td>Quay lại danh sách đơn hàng. Luôn enabled.</td></tr>
+      <tr><td>2</td><td>Mã đơn, Bàn, Thời gian, Trạng thái</td><td>Label</td><td>ReadOnly</td><td>Thông tin tóm tắt đơn gốc. Dữ liệu từ API GET /orders/{id}. Không chỉnh sửa.</td></tr>
+      <tr><td>3</td><td>Danh sách sản phẩm</td><td>Label</td><td>ReadOnly</td><td>Hiển thị tên, SL, đơn giá, thành tiền. Combo có badge "COMBO". Chỉ đọc tại màn này.</td></tr>
+      <tr><td>4</td><td>Tổng tiền, Giảm giá, Thuế, Phí DV, Cần TT</td><td>Label</td><td>ReadOnly</td><td>Tất cả giá trị tiền định dạng {N}.000đ. Tính từ BE, không tính lại FE.</td></tr>
+      <tr><td>5</td><td>Nút Tách đơn</td><td>Button</td><td>Click</td><td>Enabled khi: actor có quyền SPLIT_ORDER + đơn ACTIVE + tổng SL ≥ 2 + không có payment pending (BR-01 đến BR-04, BR-13). Disabled + tooltip khi vi phạm. Mở Bottom Sheet màn S2.</td></tr>
+      <tr><td>6</td><td>Nút Thanh toán</td><td>Button</td><td>Click</td><td>Chuyển sang màn thanh toán. Luôn hiển thị, enabled khi đơn ACTIVE.</td></tr>
+
+      <tr class="screen-hd"><td colspan="5">Screen 2: Chọn sản phẩm tách (split-item-selector)</td></tr>
+      <tr><td>1</td><td>Header — Mã đơn gốc</td><td>Label</td><td>ReadOnly</td><td>Mã đơn gốc hiển thị để tham chiếu. Không chỉnh sửa.</td></tr>
+      <tr><td>2</td><td>Checkbox chọn sản phẩm</td><td>Checkbox</td><td>Check</td><td>Tick = kích hoạt ô nhập SL tách (mặc định SL=1). Bỏ tick = xóa SL tách. Không được tick toàn bộ (BR-03): disable nút Xem Preview + hiển thị alert-warn. Tối thiểu tick 1 để tiếp tục.</td></tr>
+      <tr><td>3</td><td>Ô nhập SL tách (Stepper)</td><td>Textbox (Stepper)</td><td>Text</td><td>Chỉ enabled khi checkbox dòng đó được tick. Min=1, Max=SL_gốc của sản phẩm (BR-06). Chỉ nhận số nguyên dương. Lỗi vượt max: "Số lượng tối đa là {SL_gốc}". Lỗi <1: "Số lượng phải ít nhất là 1".</td></tr>
+      <tr><td>4</td><td>Badge COMBO + ghi chú</td><td>Label</td><td>ReadOnly</td><td>Sản phẩm combo hiển thị badge "COMBO" + ghi chú "Combo tách nguyên bộ, không tách thành phần" (BR-05). Không cho chọn lẻ thành phần.</td></tr>
+      <tr><td>5</td><td>Summary bar (Đã chọn, Tạm tính, Đơn gốc còn)</td><td>Label</td><td>ReadOnly</td><td>Cập nhật realtime theo mỗi thay đổi checkbox/SL. Hiển thị số SP đã chọn, tạm tính đơn mới, đơn gốc còn lại.</td></tr>
+      <tr><td>6</td><td>Nút Xem Preview tài chính</td><td>Button</td><td>Click</td><td>Enabled khi: ≥1 SP được chọn, tất cả SL hợp lệ, đơn gốc còn ≥1 SP. Gọi API POST /orders/{id}/split/preview, chuyển sang màn S3.</td></tr>
+      <tr><td>7</td><td>Nút Huỷ</td><td>Button</td><td>Click</td><td>Hiển thị dialog xác nhận "Bạn có chắc muốn huỷ? Mọi lựa chọn sẽ bị xóa." Xác nhận → đóng Bottom Sheet, đơn gốc không thay đổi.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

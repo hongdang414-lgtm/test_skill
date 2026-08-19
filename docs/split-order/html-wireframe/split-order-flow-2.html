@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Split Order — Flow 2: Preview & Kết quả (Mobile 375)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;background:#f0f0f0;color:#000;padding:24px}
+h1{font-size:16px;font-weight:700;margin-bottom:4px}
+.subtitle{font-size:12px;color:#888;margin-bottom:24px}
+.wf-rows{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start}
+.wf-screen{width:375px;background:#fff;border:2px solid #000;border-radius:4px;overflow:hidden;flex-shrink:0}
+.wf-screen-label{background:#000;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;letter-spacing:.5px}
+.screen-body{padding:16px}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid #ccc;margin:-16px -16px 16px}
+.topbar-title{font-weight:700;font-size:15px}
+.back-nav{font-size:13px;color:#000}
+.section-hd{font-size:11px;font-weight:700;color:#888;letter-spacing:.5px;margin:14px 0 8px;text-transform:uppercase}
+.info-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}
+.info-label{color:#888}
+.divider{border:none;border-top:1px solid #f0f0f0;margin:12px 0}
+.badge{display:inline-block;font-size:10px;font-weight:700;border:1px solid #000;border-radius:2px;padding:1px 5px}
+/* Panel đơn hàng */
+.order-panel{border:1px solid #ccc;border-radius:4px;padding:12px;margin-bottom:12px}
+.order-panel-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+.panel-tag{font-size:10px;background:#f0f0f0;border:1px solid #ccc;border-radius:2px;padding:1px 6px}
+.item-line{display:flex;justify-content:space-between;font-size:12px;padding:4px 0;border-bottom:1px solid #f0f0f0}
+.item-line:last-of-type{border-bottom:none}
+.money-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0}
+.money-row.total{font-weight:700;font-size:13px;border-top:1px solid #000;margin-top:6px;padding-top:6px}
+.money-row .label{color:#888}
+.money-row .allocated{font-size:10px;color:#888;display:block}
+/* Balance check */
+.balance-ok{border:1px solid #000;border-radius:4px;padding:10px 12px;font-size:12px;margin-bottom:12px;background:#f0f0f0}
+.balance-ok .ok-icon{font-size:14px;margin-right:6px}
+/* Alert */
+.alert{border-radius:4px;padding:10px 12px;font-size:12px;margin-bottom:12px;border:1px solid}
+.alert-warn{border-color:#888;background:#f0f0f0}
+.alert-info{border-color:#ccc;background:#fff}
+/* Buttons */
+.btn-primary{display:block;width:100%;padding:12px;background:#000;color:#fff;border:none;border-radius:4px;font-size:14px;font-weight:700;cursor:pointer;text-align:center;margin-bottom:8px}
+.btn-secondary{display:block;width:100%;padding:12px;background:#fff;color:#000;border:2px solid #000;border-radius:4px;font-size:14px;font-weight:700;cursor:pointer;text-align:center}
+.btn-danger{background:#000;border:2px solid #000}
+.btn-disabled{opacity:.35;pointer-events:none}
+.hint-text{font-size:11px;color:#888;margin-top:4px;text-align:center}
+/* Modal */
+.modal-overlay{background:#f0f0f0;border:2px solid #000;border-radius:4px;padding:16px;margin-bottom:16px}
+.modal-title{font-weight:700;font-size:14px;margin-bottom:8px}
+.modal-body{font-size:12px;color:#888;margin-bottom:14px;line-height:1.5}
+/* Result */
+.result-banner{border:2px solid #000;border-radius:4px;padding:14px;text-align:center;margin-bottom:16px}
+.result-icon{font-size:28px;margin-bottom:8px}
+.result-title{font-weight:700;font-size:15px;margin-bottom:4px}
+.result-sub{font-size:12px;color:#888}
+.order-card{border:1px solid #ccc;border-radius:4px;padding:12px;margin-bottom:10px}
+.order-card-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.order-card-id{font-weight:700;font-size:13px}
+.order-card-tag{font-size:10px;border:1px solid #000;border-radius:2px;padding:1px 5px}
+.card-actions{display:flex;gap:8px;margin-top:10px}
+.card-btn{flex:1;padding:8px;border:1px solid #000;background:#fff;font-size:12px;font-weight:700;border-radius:3px;text-align:center;cursor:pointer}
+.card-btn-primary{background:#000;color:#fff}
+/* Desc table */
+.desc-section{margin-top:48px}
+.desc-section h2{font-size:14px;font-weight:700;margin-bottom:12px;border-bottom:2px solid #000;padding-bottom:4px}
+table.wf-desc{width:100%;border-collapse:collapse;font-size:12px}
+table.wf-desc th{background:#000;color:#fff;padding:6px 8px;text-align:left;font-weight:700}
+table.wf-desc td{padding:6px 8px;border-bottom:1px solid #f0f0f0;vertical-align:top}
+table.wf-desc tr.screen-hd td{background:#f0f0f0;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<h1>Tách đơn — Flow 2: Preview tài chính &amp; Kết quả</h1>
+<p class="subtitle">Feature: split-order · Device: Mobile 375px · B&amp;W Wireframe · 2026-07-21</p>
+
+<div class="wf-rows">
+
+  <!-- SCREEN 3: Preview tài chính -->
+  <div class="wf-screen" id="s3">
+    <div class="wf-screen-label">S3 · Preview tài chính trước khi tách</div>
+    <div class="screen-body">
+      <div class="topbar">
+        <span class="back-nav">← Chỉnh sửa</span>
+        <span class="topbar-title">Preview tách đơn</span>
+        <span style="width:50px"></span>
+      </div>
+
+      <p style="font-size:12px;color:#888;margin-bottom:14px">Kiểm tra lại tài chính của 2 đơn trước khi xác nhận.</p>
+
+      <!-- Panel đơn gốc còn lại -->
+      <div class="order-panel">
+        <div class="order-panel-title">
+          Đơn gốc còn lại
+          <span class="panel-tag">HD-20240721-001</span>
+        </div>
+        <div class="item-line"><span>Phở Bò Đặc Biệt × 2</span><span>178.000đ</span></div>
+        <div class="item-line"><span>Nước Cam Vắt × 3</span><span>105.000đ</span></div>
+        <div class="divider"></div>
+        <div class="money-row"><span class="label">Tạm tính</span><span>283.000đ</span></div>
+        <div class="money-row">
+          <span class="label">Giảm giá SP</span><span>0đ</span>
+        </div>
+        <div class="money-row">
+          <span class="label">Giảm giá đơn (phân bổ)<span class="allocated">BR-07: 60.6% × 46.800đ</span></span>
+          <span>-28.362đ</span>
+        </div>
+        <div class="money-row"><span class="label">Thuế VAT (8%)</span><span>20.357đ</span></div>
+        <div class="money-row"><span class="label">Phí DV (5%)</span><span>12.723đ</span></div>
+        <div class="money-row total"><span>Cần thanh toán</span><span>287.718đ</span></div>
+      </div>
+
+      <!-- Panel đơn mới -->
+      <div class="order-panel">
+        <div class="order-panel-title">
+          Đơn mới
+          <span class="panel-tag">Sẽ tạo mới</span>
+        </div>
+        <div class="item-line"><span>Combo Bò Bít Tết × 1</span><span>185.000đ</span></div>
+        <div class="divider"></div>
+        <div class="money-row"><span class="label">Tạm tính</span><span>185.000đ</span></div>
+        <div class="money-row"><span class="label">Giảm giá SP</span><span>0đ</span></div>
+        <div class="money-row">
+          <span class="label">Giảm giá đơn (phân bổ)<span class="allocated">BR-07: 39.4% × 46.800đ</span></span>
+          <span>-18.454đ</span>
+        </div>
+        <div class="money-row"><span class="label">Thuế VAT (8%)</span><span>13.244đ</span></div>
+        <div class="money-row"><span class="label">Phí DV (5%)</span><span>8.277đ</span></div>
+        <div class="money-row total"><span>Cần thanh toán</span><span>188.067đ</span></div>
+      </div>
+
+      <!-- Balance check -->
+      <div class="balance-ok">
+        <span class="ok-icon">✓</span><strong>Tổng tiền cân bằng</strong>
+        <p style="font-size:11px;color:#888;margin-top:4px">287.718 + 188.067 = 475.785đ ≈ 475.956đ (chênh 1đ làm tròn, phân bổ vào đơn gốc)</p>
+      </div>
+
+      <!-- Cảnh báo coupon (edge case) -->
+      <div class="alert alert-warn">
+        <strong>⚠ Voucher "SUMMER10"</strong><br>
+        Voucher cố định giữ lại ở đơn gốc. Đơn mới không áp dụng voucher này.
+      </div>
+
+      <button class="btn-primary">Xác nhận Tách đơn</button>
+      <button class="btn-secondary" style="margin-top:8px">← Quay lại chỉnh sửa</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3b: Preview — Dialog xác nhận cuối -->
+  <div class="wf-screen" id="s3b">
+    <div class="wf-screen-label">S3b · Preview — Dialog xác nhận cuối</div>
+    <div class="screen-body">
+      <div class="topbar">
+        <span class="back-nav">← Chỉnh sửa</span>
+        <span class="topbar-title">Preview tách đơn</span>
+        <span style="width:50px"></span>
+      </div>
+
+      <!-- Background dimmed (giả lập overlay) -->
+      <p style="font-size:11px;color:#888;margin-bottom:12px;font-style:italic">[Màn hình S3 phía sau — bị dim]</p>
+
+      <!-- Modal xác nhận -->
+      <div class="modal-overlay">
+        <div class="modal-title">Xác nhận tách đơn?</div>
+        <div class="modal-body">
+          Hành động này sẽ tách <strong>1 sản phẩm</strong> sang đơn mới.<br><br>
+          • Đơn gốc <strong>HD-001</strong> còn lại: <strong>287.718đ</strong><br>
+          • Đơn mới sẽ được tạo: <strong>188.067đ</strong><br><br>
+          Hai đơn sẽ được thanh toán độc lập. Thao tác không thể hoàn tác.
+        </div>
+        <button class="btn-primary">Đồng ý, tiến hành tách</button>
+        <button class="btn-secondary" style="margin-top:8px">Huỷ bỏ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 3c: Preview — Loading state -->
+  <div class="wf-screen" id="s3c">
+    <div class="wf-screen-label">S3c · Đang xử lý tách đơn (Loading)</div>
+    <div class="screen-body" style="text-align:center;padding:48px 16px">
+      <div style="font-size:32px;margin-bottom:16px">⟳</div>
+      <p style="font-weight:700;font-size:15px;margin-bottom:8px">Đang tách đơn...</p>
+      <p style="font-size:12px;color:#888">Vui lòng không đóng màn hình này.<br>Quá trình thường mất dưới 3 giây.</p>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: Kết quả thành công -->
+  <div class="wf-screen" id="s4">
+    <div class="wf-screen-label">S4 · Kết quả — Tách đơn thành công</div>
+    <div class="screen-body">
+      <div class="result-banner">
+        <div class="result-icon">✓</div>
+        <div class="result-title">Tách đơn thành công!</div>
+        <div class="result-sub">Đơn HD-20240721-001 đã được tách thành 2 đơn độc lập.</div>
+      </div>
+
+      <!-- Card đơn gốc -->
+      <div class="order-card">
+        <div class="order-card-hd">
+          <span class="order-card-id">HD-20240721-001</span>
+          <span class="order-card-tag">ACTIVE</span>
+        </div>
+        <div class="info-row"><span class="info-label">Bàn 05 · Tầng 1</span><span style="font-size:11px;color:#888">Đơn gốc</span></div>
+        <div class="info-row"><span class="info-label">2 sản phẩm còn lại</span><span style="font-weight:700">287.718đ</span></div>
+        <div class="card-actions">
+          <div class="card-btn">Xem chi tiết</div>
+          <div class="card-btn card-btn-primary">Thanh toán</div>
+        </div>
+      </div>
+
+      <!-- Card đơn mới -->
+      <div class="order-card">
+        <div class="order-card-hd">
+          <span class="order-card-id">HD-20240721-003</span>
+          <span class="order-card-tag">ACTIVE</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Bàn 05 · Tầng 1</span>
+          <span style="font-size:10px;border:1px solid #888;border-radius:2px;padding:1px 4px;color:#888">Tách từ HD-001</span>
+        </div>
+        <div class="info-row"><span class="info-label">1 sản phẩm</span><span style="font-weight:700">188.067đ</span></div>
+        <div class="card-actions">
+          <div class="card-btn">Xem chi tiết</div>
+          <div class="card-btn card-btn-primary">Thanh toán</div>
+        </div>
+      </div>
+
+      <button class="btn-secondary" style="margin-top:4px">Xong — Về trang chính</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 4b: Kết quả thất bại -->
+  <div class="wf-screen" id="s4b">
+    <div class="wf-screen-label">S4b · Kết quả — Tách đơn thất bại (error)</div>
+    <div class="screen-body">
+      <div class="result-banner" style="border-color:#000">
+        <div class="result-icon">✗</div>
+        <div class="result-title">Tách đơn thất bại</div>
+        <div class="result-sub">Đã xảy ra lỗi khi xử lý. Đơn hàng gốc không thay đổi.</div>
+      </div>
+
+      <div class="alert alert-warn" style="margin-bottom:16px">
+        <strong>Lỗi:</strong> Không thể hoàn thành giao dịch. Vui lòng thử lại hoặc liên hệ hỗ trợ.<br>
+        <span style="font-size:10px;color:#888;margin-top:4px;display:block">Mã lỗi: FINANCIAL_INCONSISTENCY</span>
+      </div>
+
+      <div class="order-card">
+        <div class="order-card-hd">
+          <span class="order-card-id">HD-20240721-001</span>
+          <span class="order-card-tag">ACTIVE</span>
+        </div>
+        <div class="info-row"><span class="info-label">Đơn gốc</span><span style="font-size:11px;color:#888">Không thay đổi</span></div>
+        <div class="info-row"><span class="info-label">3 sản phẩm</span><span style="font-weight:700">475.956đ</span></div>
+      </div>
+
+      <button class="btn-primary" style="margin-top:12px">Thử lại</button>
+      <button class="btn-secondary" style="margin-top:8px">Đóng — Về chi tiết đơn</button>
+    </div>
+  </div>
+
+</div><!-- end wf-rows -->
+
+<!-- DESC TABLE -->
+<div class="desc-section">
+  <h2>Bảng mô tả màn hình — Flow 2</h2>
+  <table class="wf-desc">
+    <thead>
+      <tr><th>#</th><th>Items</th><th>Control type</th><th>Data type</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr class="screen-hd"><td colspan="5">Screen 3: Preview tài chính (split-preview)</td></tr>
+      <tr><td>1</td><td>Panel Đơn gốc còn lại</td><td>Label</td><td>ReadOnly</td><td>Danh sách SP còn lại, tạm tính, giảm giá đã phân bổ (BR-07), thuế, phí DV, tổng cần TT. Dữ liệu từ API POST /orders/{id}/split/preview. Chỉ đọc.</td></tr>
+      <tr><td>2</td><td>Panel Đơn mới</td><td>Label</td><td>ReadOnly</td><td>SP tách sang, giảm giá item phân bổ (BR-08), giảm giá đơn phân bổ (BR-07), thuế, phí DV, tổng. Ghi chú "Mã đơn mới sẽ tạo sau khi xác nhận". Chỉ đọc.</td></tr>
+      <tr><td>3</td><td>Tổng kiểm tra cân bằng</td><td>Label</td><td>ReadOnly</td><td>Hiển thị tổng đơn gốc + đơn mới và so sánh đơn gốc ban đầu. Sai lệch ≤1đ: icon ✓ + ghi chú làm tròn (BR-10). Sai lệch >1đ: ẩn nút Xác nhận + cảnh báo đỏ.</td></tr>
+      <tr><td>4</td><td>Alert cảnh báo coupon cố định</td><td>Label (Alert)</td><td>ReadOnly</td><td>Chỉ hiện khi đơn gốc có coupon cố định không phân bổ được (BR-08). Nội dung: "Voucher [TÊN] giữ lại ở đơn gốc. Đơn mới không áp dụng."</td></tr>
+      <tr><td>5</td><td>Nút Xác nhận Tách đơn</td><td>Button</td><td>Click</td><td>Enabled khi tổng tiền cân bằng (BR-10). Mở Dialog xác nhận cuối (S3b) trước khi gọi API POST /orders/{id}/split/confirm. Disabled + ẩn khi tài chính không hợp lệ.</td></tr>
+      <tr><td>6</td><td>Nút Quay lại chỉnh sửa</td><td>Button</td><td>Click</td><td>Quay lại S2 (split-item-selector), giữ nguyên lựa chọn sản phẩm trước đó.</td></tr>
+
+      <tr class="screen-hd"><td colspan="5">Screen 3b: Dialog xác nhận cuối</td></tr>
+      <tr><td>1</td><td>Modal — Thông tin tóm tắt</td><td>Label</td><td>ReadOnly</td><td>Hiển thị số SP tách, tổng tiền đơn gốc còn và đơn mới. Cảnh báo thao tác không thể hoàn tác.</td></tr>
+      <tr><td>2</td><td>Nút Đồng ý, tiến hành tách</td><td>Button</td><td>Click</td><td>Gọi API POST /orders/{id}/split/confirm, chuyển sang S3c (Loading) rồi S4/S4b.</td></tr>
+      <tr><td>3</td><td>Nút Huỷ bỏ</td><td>Button</td><td>Click</td><td>Đóng Dialog, giữ nguyên màn S3 Preview. Đơn gốc không thay đổi.</td></tr>
+
+      <tr class="screen-hd"><td colspan="5">Screen 4: Kết quả tách đơn (split-result)</td></tr>
+      <tr><td>1</td><td>Banner thành công / thất bại</td><td>Label</td><td>ReadOnly</td><td>Thành công: icon ✓, mô tả đơn đã tách. Thất bại: icon ✗, giải thích lỗi + mã lỗi kỹ thuật (FINANCIAL_INCONSISTENCY, v.v.).</td></tr>
+      <tr><td>2</td><td>Card Đơn gốc (thành công)</td><td>Label</td><td>ReadOnly</td><td>Mã đơn gốc, badge ACTIVE, số SP còn lại, tổng tiền. Nút Xem chi tiết và Thanh toán độc lập.</td></tr>
+      <tr><td>3</td><td>Card Đơn mới (thành công)</td><td>Label</td><td>ReadOnly</td><td>Mã đơn mới (sinh tự động, unique — BR-14), badge ACTIVE, badge phụ "Tách từ [MÃ_GỐC]", tổng tiền. Nút Xem chi tiết và Thanh toán.</td></tr>
+      <tr><td>4</td><td>Nút Xong — Về trang chính</td><td>Button</td><td>Click</td><td>Chuyển về màn hình chính POS hoặc danh sách đơn hàng.</td></tr>
+      <tr><td>5</td><td>Nút Thử lại (trường hợp lỗi)</td><td>Button</td><td>Click</td><td>Quay lại S3 Preview với lựa chọn sản phẩm giữ nguyên. Chỉ hiện khi thất bại.</td></tr>
+      <tr><td>6</td><td>Nút Đóng — Về chi tiết đơn (lỗi)</td><td>Button</td><td>Click</td><td>Quay lại S1 Chi tiết đơn hàng gốc. Đơn gốc không thay đổi (đã rollback — BR-11).</td></tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

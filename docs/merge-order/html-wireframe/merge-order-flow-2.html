@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Merge Order — Flow 2: Preview &amp; Kết quả (Mobile 375)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;background:#f0f0f0;color:#000;padding:24px}
+h1{font-size:16px;font-weight:700;margin-bottom:4px}
+.subtitle{font-size:12px;color:#888;margin-bottom:24px}
+.wf-rows{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start}
+.wf-screen{width:375px;background:#fff;border:2px solid #000;border-radius:4px;overflow:hidden;flex-shrink:0}
+.wf-screen-label{background:#000;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;letter-spacing:.5px}
+.screen-body{padding:16px}
+/* Topbar */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid #ccc;margin:-16px -16px 16px}
+.topbar-title{font-weight:700;font-size:15px}
+.back-nav{font-size:13px;color:#000;cursor:pointer}
+/* Badge */
+.badge{display:inline-block;font-size:10px;font-weight:700;border:1px solid #000;border-radius:2px;padding:1px 5px;margin-left:6px;vertical-align:middle}
+.badge-active{background:#fff}
+.badge-merged{background:#ccc;color:#000}
+.badge-new{background:#f0f0f0;border-style:dashed}
+/* Info row */
+.info-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px}
+.info-label{color:#888}
+/* Section header */
+.section-hd{font-size:11px;font-weight:700;color:#888;letter-spacing:.5px;margin:14px 0 8px;text-transform:uppercase}
+/* Item list */
+.item-list{border:1px solid #ccc;border-radius:4px;overflow:hidden;margin-bottom:16px}
+.item-row{display:flex;align-items:center;padding:10px 12px;border-bottom:1px solid #f0f0f0;gap:8px}
+.item-row:last-child{border-bottom:none}
+.item-row.highlight{background:#f0f0f0}
+.item-name{flex:1;font-size:13px;font-weight:600}
+.item-sub{font-size:11px;color:#888}
+.item-price{font-size:13px;text-align:right;min-width:70px}
+/* Buttons */
+.btn-primary{display:block;width:100%;padding:12px;background:#000;color:#fff;border:none;border-radius:4px;font-size:14px;font-weight:700;cursor:pointer;text-align:center;margin-bottom:8px}
+.btn-secondary{display:block;width:100%;padding:12px;background:#fff;color:#000;border:2px solid #000;border-radius:4px;font-size:14px;font-weight:700;cursor:pointer;text-align:center}
+.btn-disabled{opacity:.35;pointer-events:none}
+/* Tooltip note */
+.hint-text{font-size:11px;color:#888;margin-top:4px;text-align:center}
+/* Alert */
+.alert{border-radius:4px;padding:10px 12px;font-size:12px;margin-bottom:12px;border:1px solid}
+.alert-warn{border-color:#888;background:#f0f0f0}
+.alert-success{border-color:#000;background:#f0f0f0}
+.alert-error{border-color:#000;background:#f0f0f0}
+.alert-icon{font-weight:700;margin-right:4px}
+/* Panel */
+.panel{border:1px solid #ccc;border-radius:4px;padding:12px;margin-bottom:12px}
+.panel-title{font-size:12px;font-weight:700;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #f0f0f0}
+/* Divider */
+.divider{border:none;border-top:1px solid #f0f0f0;margin:12px 0}
+/* Modal overlay */
+.modal-overlay{position:relative;background:rgba(0,0,0,.12);border-radius:4px;padding:24px 16px;margin:-16px;margin-top:0}
+.modal-box{background:#fff;border:2px solid #000;border-radius:8px;padding:20px;max-width:340px;margin:0 auto}
+.modal-title{font-size:15px;font-weight:700;margin-bottom:12px}
+.modal-text{font-size:13px;color:#000;margin-bottom:16px;line-height:1.5}
+/* Loading */
+.loading-center{text-align:center;padding:48px 16px}
+.spinner{display:inline-block;width:40px;height:40px;border:3px solid #ccc;border-top-color:#000;border-radius:50%;margin-bottom:12px}
+.loading-text{font-size:13px;color:#888}
+/* Order card (result) */
+.result-card{border:2px solid #000;border-radius:4px;padding:12px;margin-bottom:12px}
+.result-card .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.result-card .card-title{font-size:14px;font-weight:700}
+/* Desc table */
+.desc-section{margin-top:48px}
+.desc-section h2{font-size:14px;font-weight:700;margin-bottom:12px;border-bottom:2px solid #000;padding-bottom:4px}
+table.wf-desc{width:100%;border-collapse:collapse;font-size:12px}
+table.wf-desc th{background:#000;color:#fff;padding:6px 8px;text-align:left;font-weight:700}
+table.wf-desc td{padding:6px 8px;border-bottom:1px solid #f0f0f0;vertical-align:top}
+table.wf-desc tr.screen-hd td{background:#f0f0f0;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase}
+table.wf-desc tr:hover td{background:#f0f0f0}
+</style>
+</head>
+<body>
+
+<h1>Ghép đơn — Flow 2: Preview &amp; Kết quả</h1>
+<p class="subtitle">Feature: merge-order · Device: Mobile 375px · B&amp;W Wireframe · 2026-07-23</p>
+
+<div class="wf-rows">
+
+  <!-- SCREEN 3: Preview tài chính -->
+  <div class="wf-screen" id="s3">
+    <div class="wf-screen-label">S3 · Preview tài chính đơn đích sau ghép</div>
+    <div class="screen-body">
+      <div class="topbar">
+        <span class="back-nav">← Quay lại</span>
+        <span class="topbar-title">Preview ghép đơn</span>
+        <span style="width:40px"></span>
+      </div>
+
+      <!-- Panel: Đơn gốc (sẽ ghép) -->
+      <div class="panel">
+        <div class="panel-title">Đơn gốc: HD-20260723-010 <span class="badge badge-active">ACTIVE</span> → <span class="badge badge-merged">MERGED</span></div>
+        <div class="info-row"><span class="info-label">Bàn</span><span>Bàn 03 — Tầng 1</span></div>
+        <div class="item-list">
+          <div class="item-row">
+            <div style="flex:1"><div class="item-name">Bún Bò Huế</div><div class="item-sub">x2</div></div>
+            <div class="item-price">150.000đ</div>
+          </div>
+          <div class="item-row">
+            <div style="flex:1"><div class="item-name">Trà Đào Cam Sả</div><div class="item-sub">x1</div></div>
+            <div class="item-price">45.000đ</div>
+          </div>
+        </div>
+        <div class="info-row"><span class="info-label">Tạm tính</span><span>195.000đ</span></div>
+      </div>
+
+      <!-- Alert: Giảm giá bị hủy -->
+      <div class="alert alert-warn">
+        <span class="alert-icon">(!) </span>Giảm giá đơn hàng "Giảm 5%" (9.750đ) của đơn gốc sẽ bị hủy sau khi ghép.
+      </div>
+
+      <!-- Panel: Đơn đích (sau ghép) -->
+      <div class="panel" style="border-color:#000;border-width:2px">
+        <div class="panel-title">Đơn đích (sau ghép): HD-20260723-008 <span class="badge badge-active">ACTIVE</span></div>
+        <div class="info-row"><span class="info-label">Bàn</span><span>Bàn 03 — Tầng 1</span></div>
+
+        <div class="section-hd">Sản phẩm</div>
+        <div class="item-list">
+          <!-- Existing items -->
+          <div class="item-row">
+            <div style="flex:1"><div class="item-name">Phở Bò Đặc Biệt</div><div class="item-sub">x2 · 89.000đ</div></div>
+            <div class="item-price">178.000đ</div>
+          </div>
+          <div class="item-row">
+            <div style="flex:1"><div class="item-name">Nước Ép Dưa Hấu</div><div class="item-sub">x1 · 35.000đ</div></div>
+            <div class="item-price">35.000đ</div>
+          </div>
+          <!-- Merged items (highlight) -->
+          <div class="item-row highlight">
+            <div style="flex:1"><div class="item-name">Bún Bò Huế <span class="badge badge-new">MỚI GHÉP</span></div><div class="item-sub">x2 · 75.000đ</div></div>
+            <div class="item-price">150.000đ</div>
+          </div>
+          <div class="item-row highlight">
+            <div style="flex:1"><div class="item-name">Trà Đào Cam Sả <span class="badge badge-new">MỚI GHÉP</span></div><div class="item-sub">x1 · 45.000đ</div></div>
+            <div class="item-price">45.000đ</div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="info-row"><span class="info-label">Tạm tính</span><span>408.000đ</span></div>
+        <div class="info-row"><span class="info-label">Giảm giá SP</span><span>-0đ</span></div>
+        <div class="info-row"><span class="info-label">Giảm giá đơn (10%)</span><span>-40.800đ</span></div>
+        <div class="info-row"><span class="info-label">Thuế VAT (8%)</span><span>29.376đ</span></div>
+        <div class="info-row"><span class="info-label">Phí dịch vụ (5%)</span><span>18.360đ</span></div>
+        <div class="info-row" style="font-weight:700;font-size:15px;margin-top:6px;border-top:1px solid #ccc;padding-top:8px">
+          <span>Cần thanh toán</span><span>414.936đ</span>
+        </div>
+      </div>
+
+      <button class="btn-primary">Xác nhận Ghép đơn</button>
+      <button class="btn-secondary">← Quay lại chọn đơn</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3b: Dialog xác nhận -->
+  <div class="wf-screen" id="s3b">
+    <div class="wf-screen-label">S3b · Dialog xác nhận ghép đơn</div>
+    <div class="screen-body">
+      <div class="topbar">
+        <span class="back-nav">← Quay lại</span>
+        <span class="topbar-title">Preview ghép đơn</span>
+        <span style="width:40px"></span>
+      </div>
+
+      <div class="modal-overlay">
+        <div class="modal-box">
+          <div class="modal-title">Xác nhận ghép đơn</div>
+          <div class="modal-text">
+            Ghép toàn bộ <strong>3 sản phẩm</strong> từ đơn <strong>HD-010</strong> vào đơn <strong>HD-008</strong>.<br/><br/>
+            (!) Đơn gốc sẽ được đánh dấu <strong>Đã ghép</strong> và không thể sử dụng lại.<br/><br/>
+            (!) Giảm giá "Giảm 5%" (9.750đ) của đơn gốc sẽ bị hủy.
+          </div>
+          <button class="btn-primary">Đồng ý</button>
+          <button class="btn-secondary" style="margin-top:8px">Hủy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 3c: Loading -->
+  <div class="wf-screen" id="s3c">
+    <div class="wf-screen-label">S3c · Đang xử lý ghép đơn (Loading)</div>
+    <div class="screen-body">
+      <div class="topbar">
+        <span style="width:60px"></span>
+        <span class="topbar-title">Ghép đơn</span>
+        <span style="width:60px"></span>
+      </div>
+
+      <div class="loading-center">
+        <div class="spinner"></div>
+        <div class="loading-text">Đang ghép đơn hàng...<br/>Vui lòng không tắt ứng dụng.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: Kết quả thành công -->
+  <div class="wf-screen" id="s4">
+    <div class="wf-screen-label">S4 · Kết quả ghép đơn — Thành công</div>
+    <div class="screen-body">
+      <div class="topbar">
+        <span style="width:60px"></span>
+        <span class="topbar-title">Kết quả</span>
+        <span style="width:60px"></span>
+      </div>
+
+      <!-- Success banner -->
+      <div class="alert alert-success">
+        <span class="alert-icon">(OK) </span>Ghép đơn thành công! Đơn <strong>HD-010</strong> đã được ghép vào đơn <strong>HD-008</strong>.
+      </div>
+
+      <!-- Target order card -->
+      <div class="result-card">
+        <div class="card-header">
+          <span class="card-title">HD-20260723-008</span>
+          <span class="badge badge-active">ACTIVE</span>
+        </div>
+        <div class="info-row"><span class="info-label">Bàn</span><span>Bàn 03 — Tầng 1</span></div>
+        <div class="info-row"><span class="info-label">Sản phẩm</span><span>5 sản phẩm</span></div>
+        <div class="info-row" style="font-weight:700"><span>Cần thanh toán</span><span>414.936đ</span></div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="btn-primary" style="flex:1;margin:0">Thanh toán</button>
+          <button class="btn-secondary" style="flex:1">Chi tiết</button>
+        </div>
+      </div>
+
+      <!-- Source order info -->
+      <div style="border:1px solid #ccc;border-radius:4px;padding:10px 12px;margin-bottom:16px">
+        <div class="info-row" style="margin:0">
+          <span style="font-size:12px"><strong>HD-010</strong> <span class="badge badge-merged">ĐÃ GHÉP</span></span>
+          <span class="item-sub">Đã đánh dấu Đã ghép</span>
+        </div>
+      </div>
+
+      <button class="btn-primary">Xem chi tiết đơn đích →</button>
+      <button class="btn-secondary" style="margin-top:8px">Về danh sách đơn hàng</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 4b: Kết quả thất bại -->
+  <div class="wf-screen" id="s4b">
+    <div class="wf-screen-label">S4b · Kết quả ghép đơn — Thất bại (error)</div>
+    <div class="screen-body">
+      <div class="topbar">
+        <span style="width:60px"></span>
+        <span class="topbar-title">Kết quả</span>
+        <span style="width:60px"></span>
+      </div>
+
+      <div class="alert alert-error">
+        <span class="alert-icon">(X) </span>Ghép đơn thất bại. Cả 2 đơn hàng không thay đổi.<br/><br/>
+        Lỗi: Trạng thái đơn đích đã thay đổi trong quá trình xử lý. Vui lòng thử lại.
+      </div>
+
+      <button class="btn-primary">Thử lại</button>
+      <button class="btn-secondary" style="margin-top:8px">Đóng</button>
+    </div>
+  </div>
+
+</div><!-- end wf-rows -->
+
+<!-- DESC TABLE -->
+<div class="desc-section">
+  <h2>Bảng mô tả màn hình — Flow 2</h2>
+  <table class="wf-desc">
+    <thead>
+      <tr><th>#</th><th>Items</th><th>Control type</th><th>Data type</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr class="screen-hd"><td colspan="5">Screen 3: Preview tài chính (merge-preview)</td></tr>
+      <tr><td>1</td><td>Panel Đơn gốc</td><td>Label</td><td>ReadOnly</td><td>Mã đơn gốc, Bàn, DS SP, Tạm tính. Hiển thị mũi tên ACTIVE → MERGED. Chỉ đọc.</td></tr>
+      <tr><td>2</td><td>Cảnh báo giảm giá bị hủy</td><td>Label</td><td>ReadOnly</td><td>Hiển thị khi đơn gốc có giảm giá order-level (BR-10). Nội dung: tên GG + giá trị bị hủy.</td></tr>
+      <tr><td>3</td><td>Cảnh báo khác bàn</td><td>Label</td><td>ReadOnly</td><td>Hiển thị khi 2 đơn khác bàn (BR-18). Nội dung: tên bàn gốc + bàn đích.</td></tr>
+      <tr><td>4</td><td>Panel Đơn đích (sau ghép)</td><td>Label</td><td>ReadOnly</td><td>Mã đơn đích, Bàn, DS SP (cũ + mới highlight). SP trùng gộp SL (BR-13). Tạm tính, GG SP (BR-09), GG đơn (BR-11), Thuế, Phí DV, Cần TT (BR-12).</td></tr>
+      <tr><td>5</td><td>Nút Xác nhận Ghép đơn</td><td>Button</td><td>Click</td><td>Style Danger. Nhấn → mở Dialog xác nhận (S3b). Thao tác không undo.</td></tr>
+      <tr><td>6</td><td>Nút Quay lại</td><td>Button</td><td>Click</td><td>Quay lại DS đơn có thể ghép (S2). Giữ lựa chọn.</td></tr>
+
+      <tr class="screen-hd"><td colspan="5">Screen 3b: Dialog xác nhận (merge-confirm-dialog)</td></tr>
+      <tr><td>1</td><td>Tiêu đề</td><td>Label</td><td>ReadOnly</td><td>"Xác nhận ghép đơn"</td></tr>
+      <tr><td>2</td><td>Nội dung xác nhận</td><td>Label</td><td>ReadOnly</td><td>Tóm tắt: số SP, mã gốc, mã đích, cảnh báo MERGED, cảnh báo GG bị hủy (nếu có), cảnh báo khác bàn (nếu có).</td></tr>
+      <tr><td>3</td><td>Nút Đồng ý</td><td>Button</td><td>Click</td><td>Gọi API confirm. Disable ngay + spinner ngăn double-click.</td></tr>
+      <tr><td>4</td><td>Nút Hủy</td><td>Button</td><td>Click</td><td>Đóng dialog, quay lại Preview.</td></tr>
+
+      <tr class="screen-hd"><td colspan="5">Screen 4: Kết quả ghép đơn (merge-result)</td></tr>
+      <tr><td>1</td><td>Banner thành công</td><td>Label</td><td>ReadOnly</td><td>Nội dung: "Ghép đơn thành công! Đơn [MÃ_GỐC] đã ghép vào [MÃ_ĐÍCH]."</td></tr>
+      <tr><td>2</td><td>Card đơn đích</td><td>Label</td><td>ReadOnly</td><td>Mã đơn, Bàn, Số SP, Tổng tiền. Badge ACTIVE. Nút Thanh toán + Chi tiết.</td></tr>
+      <tr><td>3</td><td>Info đơn gốc</td><td>Label</td><td>ReadOnly</td><td>Mã đơn gốc + badge ĐÃ GHÉP.</td></tr>
+      <tr><td>4</td><td>Nút Xem chi tiết đơn đích</td><td>Button</td><td>Click</td><td>Mở chi tiết đơn đích (auto-redirect sau 3s).</td></tr>
+      <tr><td>5</td><td>Nút Về danh sách</td><td>Button</td><td>Click</td><td>Quay về DS đơn hàng / POS chính.</td></tr>
+      <tr><td>6</td><td>Banner lỗi</td><td>Label</td><td>ReadOnly</td><td>"Ghép đơn thất bại. 2 đơn không đổi." + Nút Thử lại + Đóng.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

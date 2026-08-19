@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Split Order — Index Điều hướng Wireframe</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;background:#f0f0f0;color:#000;display:flex;height:100vh;overflow:hidden}
+/* Sidebar */
+.sidebar{width:260px;background:#000;color:#fff;display:flex;flex-direction:column;overflow:hidden;flex-shrink:0}
+.sidebar-hd{padding:16px;border-bottom:1px solid #333}
+.sidebar-hd h1{font-size:14px;font-weight:700;margin-bottom:2px}
+.sidebar-hd p{font-size:11px;color:#888}
+.sidebar-body{flex:1;overflow-y:auto;padding:12px}
+.toc-section{margin-bottom:16px}
+.toc-flow{font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;padding:6px 8px;cursor:pointer;border-radius:3px;transition:background .15s}
+.toc-flow:hover{background:#222}
+.toc-screens{padding-left:8px;margin-top:4px}
+.toc-screen{display:flex;align-items:center;gap:6px;padding:5px 8px;cursor:pointer;border-radius:3px;font-size:12px;color:#ccc;transition:background .15s}
+.toc-screen:hover{background:#222;color:#fff}
+.toc-screen.active{background:#fff;color:#000;font-weight:700}
+.toc-screen .snum{font-size:10px;background:#333;color:#ccc;border-radius:2px;padding:1px 4px;flex-shrink:0}
+.toc-screen.active .snum{background:#000;color:#fff}
+/* Main */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.main-toolbar{background:#fff;border-bottom:1px solid #ccc;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.toolbar-title{font-weight:700;font-size:13px}
+.toolbar-meta{font-size:11px;color:#888}
+.tab-bar{display:flex;gap:2px;background:#f0f0f0;border-bottom:1px solid #ccc;padding:0 16px;flex-shrink:0}
+.tab{padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;border-bottom:2px solid transparent;color:#888}
+.tab.active{border-bottom-color:#000;color:#000}
+.iframe-wrap{flex:1;overflow:hidden;background:#f0f0f0}
+.iframe-wrap iframe{width:100%;height:100%;border:none}
+/* Flow map (tab 2) */
+.flowmap{padding:24px;overflow-y:auto;height:100%}
+.flowmap h2{font-size:13px;font-weight:700;margin-bottom:16px}
+.flowgroup{margin-bottom:32px}
+.flowgroup-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#888;margin-bottom:10px}
+.flow-chain{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.node{padding:6px 12px;border:1px solid #000;border-radius:4px;font-size:11px;font-weight:700;background:#fff;cursor:pointer;white-space:nowrap}
+.node:hover{background:#f0f0f0}
+.node.edge{border-style:dashed;color:#888}
+.node.error{background:#f0f0f0;color:#000}
+.node-arrow{font-size:14px;color:#888}
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="sidebar-hd">
+    <h1>Split Order</h1>
+    <p>Wireframe · Mobile 375px · 2026-07-21</p>
+  </div>
+  <div class="sidebar-body">
+
+    <div class="toc-section">
+      <div class="toc-flow" onclick="loadFlow('split-order-flow-1.html')">
+        Flow 1 — Chọn sản phẩm tách
+      </div>
+      <div class="toc-screens">
+        <div class="toc-screen active" onclick="loadScreen('split-order-flow-1.html','s1')">
+          <span class="snum">S1</span> Chi tiết đơn hàng
+        </div>
+        <div class="toc-screen" onclick="loadScreen('split-order-flow-1.html','s1b')">
+          <span class="snum">S1b</span> Nút disabled (edge)
+        </div>
+        <div class="toc-screen" onclick="loadScreen('split-order-flow-1.html','s2')">
+          <span class="snum">S2</span> Chọn sản phẩm tách
+        </div>
+        <div class="toc-screen" onclick="loadScreen('split-order-flow-1.html','s2b')">
+          <span class="snum">S2b</span> Lỗi chọn toàn bộ
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-section">
+      <div class="toc-flow" onclick="loadFlow('split-order-flow-2.html')">
+        Flow 2 — Preview &amp; Kết quả
+      </div>
+      <div class="toc-screens">
+        <div class="toc-screen" onclick="loadScreen('split-order-flow-2.html','s3')">
+          <span class="snum">S3</span> Preview tài chính
+        </div>
+        <div class="toc-screen" onclick="loadScreen('split-order-flow-2.html','s3b')">
+          <span class="snum">S3b</span> Dialog xác nhận
+        </div>
+        <div class="toc-screen" onclick="loadScreen('split-order-flow-2.html','s3c')">
+          <span class="snum">S3c</span> Loading
+        </div>
+        <div class="toc-screen" onclick="loadScreen('split-order-flow-2.html','s4')">
+          <span class="snum">S4</span> Kết quả thành công
+        </div>
+        <div class="toc-screen" onclick="loadScreen('split-order-flow-2.html','s4b')">
+          <span class="snum">S4b</span> Kết quả thất bại
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Main content -->
+<div class="main">
+  <div class="main-toolbar">
+    <span class="toolbar-title" id="current-title">Flow 1 — Chọn sản phẩm tách</span>
+    <span class="toolbar-meta">B&amp;W · Mobile 375px · split-order</span>
+  </div>
+  <div class="tab-bar">
+    <div class="tab active" onclick="showTab('wireframe')">Wireframe</div>
+    <div class="tab" onclick="showTab('flowmap')">Flow Map</div>
+  </div>
+
+  <!-- Tab: Wireframe iframe -->
+  <div class="iframe-wrap" id="tab-wireframe">
+    <iframe id="wf-frame" src="split-order-flow-1.html"></iframe>
+  </div>
+
+  <!-- Tab: Flow map -->
+  <div class="flowmap" id="tab-flowmap" style="display:none">
+    <h2>Sơ đồ điều hướng — Tách đơn (Split Order)</h2>
+
+    <div class="flowgroup">
+      <div class="flowgroup-title">Flow 1 · Chọn sản phẩm tách</div>
+      <div class="flow-chain">
+        <div class="node" onclick="loadScreen('split-order-flow-1.html','s1')">S1 · Chi tiết đơn</div>
+        <span class="node-arrow">→</span>
+        <div class="node" onclick="loadScreen('split-order-flow-1.html','s2')">S2 · Chọn SP tách</div>
+        <span class="node-arrow">→</span>
+        <div class="node" onclick="loadScreen('split-order-flow-2.html','s3')">S3 · Preview TC</div>
+        <span class="node-arrow">→</span>
+        <div class="node" onclick="loadScreen('split-order-flow-2.html','s3b')">S3b · Xác nhận</div>
+        <span class="node-arrow">→</span>
+        <div class="node" onclick="loadScreen('split-order-flow-2.html','s3c')">S3c · Loading</div>
+        <span class="node-arrow">→</span>
+        <div class="node" onclick="loadScreen('split-order-flow-2.html','s4')">S4 · Thành công</div>
+      </div>
+    </div>
+
+    <div class="flowgroup">
+      <div class="flowgroup-title">Nhánh Error / Edge Cases</div>
+      <div class="flow-chain">
+        <div class="node edge" onclick="loadScreen('split-order-flow-1.html','s1b')">S1b · Nút disabled<br><small>(SL &lt; 2 / thiếu quyền)</small></div>
+        <span class="node-arrow">  |  </span>
+        <div class="node error" onclick="loadScreen('split-order-flow-1.html','s2b')">S2b · Chọn toàn bộ<br><small>(đơn gốc rỗng)</small></div>
+        <span class="node-arrow">  |  </span>
+        <div class="node error" onclick="loadScreen('split-order-flow-2.html','s4b')">S4b · Tách thất bại<br><small>(lỗi hệ thống)</small></div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;font-size:11px;color:#888">
+      <strong>Chú thích:</strong>
+      <span style="border:1px solid #000;padding:2px 8px;margin:0 4px">node thường</span> = happy path
+      <span style="border:1px dashed #888;padding:2px 8px;margin:0 4px;color:#888">node dashed</span> = edge case
+      <span style="background:#f0f0f0;border:1px solid #000;padding:2px 8px;margin:0 4px">node shaded</span> = error
+    </div>
+  </div>
+</div>
+
+<script>
+var currentFile='split-order-flow-1.html';
+function loadFlow(file){
+  currentFile=file;
+  document.getElementById('wf-frame').src=file;
+  document.getElementById('tab-wireframe').style.display='block';
+  document.getElementById('tab-flowmap').style.display='none';
+  document.querySelectorAll('.tab').forEach(function(t,i){t.classList.toggle('active',i===0)});
+  updateActive();
+}
+function loadScreen(file,anchor){
+  currentFile=file;
+  document.getElementById('wf-frame').src=file+(anchor?'#'+anchor:'');
+  showTab('wireframe');
+  updateActive();
+  // Update current title
+  var titles={'split-order-flow-1.html':'Flow 1 — Chọn sản phẩm tách','split-order-flow-2.html':'Flow 2 — Preview & Kết quả'};
+  document.getElementById('current-title').textContent=titles[file]||file;
+}
+function showTab(tab){
+  document.getElementById('tab-wireframe').style.display=tab==='wireframe'?'block':'none';
+  document.getElementById('tab-flowmap').style.display=tab==='flowmap'?'block':'none';
+  document.querySelectorAll('.tab').forEach(function(t,i){t.classList.toggle('active',tab==='wireframe'?i===0:i===1)});
+}
+function updateActive(){
+  document.querySelectorAll('.toc-screen').forEach(function(el){el.classList.remove('active')});
+}
+</script>
+</body>
+</html>

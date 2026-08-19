@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Price List — Quản lý Bảng giá (Desktop 1024px)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;background:#f0f0f0;color:#000;padding:24px}
+h1{font-size:16px;font-weight:700;margin-bottom:4px}
+.subtitle{font-size:12px;color:#888;margin-bottom:24px}
+.wf-rows{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start;flex-direction:column}
+.wf-screen{width:1024px;background:#fff;border:2px solid #000;border-radius:4px;overflow:hidden;flex-shrink:0}
+.wf-screen-label{background:#000;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;letter-spacing:.5px}
+.screen-body{padding:24px}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid #ccc;margin-bottom:24px}
+.topbar-title{font-weight:700;font-size:20px}
+.back-nav{font-size:14px;color:#000;cursor:pointer}
+table.data-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px}
+table.data-table th{background:#f0f0f0;padding:10px;text-align:left;border-bottom:2px solid #ccc;font-weight:700}
+table.data-table td{padding:10px;border-bottom:1px solid #eee;vertical-align:middle}
+.btn-primary{padding:8px 16px;background:#000;color:#fff;border:none;border-radius:4px;font-size:13px;font-weight:700;cursor:pointer}
+.btn-secondary{padding:8px 16px;background:#fff;color:#000;border:1px solid #000;border-radius:4px;font-size:13px;font-weight:700;cursor:pointer}
+.btn-danger{padding:8px 16px;background:#fff;color:#d00;border:1px solid #d00;border-radius:4px;font-size:13px;font-weight:700;cursor:pointer}
+.btn-icon{background:none;border:none;cursor:pointer;font-size:14px;color:#888;padding:4px}
+.badge{display:inline-block;font-size:11px;font-weight:700;border:1px solid #000;border-radius:2px;padding:2px 6px}
+.badge-active{background:#000;color:#fff}
+.badge-pending{background:#f0f0f0;color:#000}
+.badge-ended{background:#fff;color:#888;border-color:#888}
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
+.form-control{width:100%;padding:8px 12px;border:1px solid #ccc;border-radius:4px;font-size:13px}
+.form-row{display:flex;gap:16px}
+.form-col{flex:1}
+textarea.form-control{height:80px;resize:vertical}
+.form-hint{font-size:11px;color:#888;margin-top:4px}
+.checkbox-label{display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer}
+.tabs{display:flex;border-bottom:1px solid #ccc;margin-bottom:16px}
+.tab{padding:8px 16px;font-size:13px;font-weight:700;color:#888;cursor:pointer;border-bottom:2px solid transparent}
+.tab.active{color:#000;border-bottom-color:#000}
+.modal-overlay{background:rgba(0,0,0,0.05);padding:40px;display:flex;justify-content:center;align-items:flex-start}
+.modal-box{background:#fff;border-radius:4px;width:600px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.2);border:1px solid #ccc}
+.modal-hd{padding:16px 24px;border-bottom:1px solid #ccc;font-weight:700;font-size:16px;display:flex;justify-content:space-between}
+.modal-body{padding:24px}
+.modal-ft{padding:16px 24px;border-top:1px solid #ccc;display:flex;justify-content:flex-end;gap:12px;background:#f9f9f9}
+.layout-2col{display:flex;gap:32px}
+.col-left{width:320px;flex-shrink:0}
+.col-right{flex:1}
+.desc-section{margin-top:48px;width:1024px}
+.desc-section h2{font-size:14px;font-weight:700;margin-bottom:12px;border-bottom:2px solid #000;padding-bottom:4px}
+table.wf-desc{width:100%;border-collapse:collapse;font-size:12px;background:#fff;border:1px solid #ccc}
+table.wf-desc th{background:#000;color:#fff;padding:8px 12px;text-align:left;font-weight:700}
+table.wf-desc td{padding:8px 12px;border-bottom:1px solid #eee;vertical-align:top}
+table.wf-desc tr.screen-hd td{background:#f0f0f0;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase}
+.filter-bar{display:flex;gap:12px;margin-bottom:16px}
+.search-box{flex:1;position:relative}
+.search-box input{padding-left:32px}
+.search-box::before{content:"(S)";position:absolute;left:10px;top:9px;color:#888;font-size:12px}
+.pagination{display:flex;justify-content:flex-end;gap:4px;margin-top:16px;align-items:center;font-size:13px}
+.page-btn{padding:4px 8px;border:1px solid #ccc;border-radius:2px;background:#fff;cursor:pointer}
+.page-btn.active{background:#000;color:#fff;border-color:#000}
+.toggle-switch{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700}
+.toggle-track{width:36px;height:20px;background:#ccc;border-radius:10px;position:relative}
+.toggle-track.on{background:#000}
+.toggle-knob{width:16px;height:16px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px}
+.toggle-track.on .toggle-knob{left:18px}
+.empty-state{padding:48px;text-align:center;color:#888;background:#f9f9f9;border:1px dashed #ccc;border-radius:4px}
+</style>
+</head>
+<body>
+
+<h1>Quản lý Bảng giá (Price List Management)</h1>
+<p class="subtitle">Feature: price-list · Device: Desktop 1024px · B&W Wireframe · 2026-07-24</p>
+
+<div class="wf-rows">
+
+  <!-- SCREEN 1: price-list-listing -->
+  <div class="wf-screen" id="s1">
+    <div class="wf-screen-label">S1 · Danh sách bảng giá (price-list-listing)</div>
+    <div class="screen-body">
+      <div class="topbar">
+        <span class="topbar-title">Bảng giá</span>
+        <button class="btn-primary">+ Thêm bảng giá</button>
+      </div>
+      
+      <div class="filter-bar">
+        <div class="search-box">
+          <input type="text" class="form-control" placeholder="Tìm theo tên hoặc mã bảng giá...">
+        </div>
+        <select class="form-control" style="width:200px">
+          <option>Tất cả trạng thái</option>
+          <option>Chưa diễn ra</option>
+          <option>Đang diễn ra</option>
+          <option>Đã kết thúc</option>
+        </select>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Mã</th>
+            <th>Tên bảng giá</th>
+            <th>Trạng thái</th>
+            <th>Thời gian áp dụng</th>
+            <th>Nhóm KH</th>
+            <th>Mục</th>
+            <th>Ngày tạo</th>
+            <th style="width:60px"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>BG-202607-001</td>
+            <td><strong>Giá ưu đãi Sinh viên T7</strong></td>
+            <td><span class="badge badge-active">ĐANG DIỄN RA</span></td>
+            <td>01/07/2026 - 31/07/2026<br><small style="color:#888">18:00 - 22:00</small></td>
+            <td>Sinh viên</td>
+            <td>12</td>
+            <td>28/06/2026</td>
+            <td><button class="btn-icon">⋮</button></td>
+          </tr>
+          <tr>
+            <td>BG-202607-002</td>
+            <td><strong>Lễ Quốc Khánh 2/9</strong></td>
+            <td><span class="badge badge-pending">CHƯA DIỄN RA</span></td>
+            <td>01/09/2026 - 03/09/2026<br><small style="color:#888">Cả ngày</small></td>
+            <td>Tất cả</td>
+            <td>45</td>
+            <td>24/07/2026</td>
+            <td><button class="btn-icon">⋮</button></td>
+          </tr>
+          <tr>
+            <td>BG-202606-005</td>
+            <td><strong>Flash Sale Cuối tháng 6</strong></td>
+            <td><span class="badge badge-ended">ĐÃ KẾT THÚC</span></td>
+            <td>28/06/2026 - 30/06/2026<br><small style="color:#888">Cả ngày</small></td>
+            <td>Tất cả</td>
+            <td>8</td>
+            <td>20/06/2026</td>
+            <td><button class="btn-icon">⋮</button></td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div class="pagination">
+        <span>Hiển thị 1-3 của 3</span>
+        <div style="width:16px"></div>
+        <button class="page-btn active">1</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: price-list-form -->
+  <div class="wf-screen" id="s2">
+    <div class="wf-screen-label">S2 · Form tạo / chỉnh sửa bảng giá (price-list-form)</div>
+    <div class="screen-body">
+      <div class="topbar">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="back-nav">←</span>
+          <span class="topbar-title">Thêm bảng giá mới</span>
+        </div>
+        <div style="display:flex;gap:12px">
+          <button class="btn-secondary">Hủy</button>
+          <button class="btn-primary">Lưu bảng giá</button>
+        </div>
+      </div>
+
+      <div class="layout-2col">
+        <!-- Left Col: Basic Info -->
+        <div class="col-left">
+          <div class="form-group">
+            <label class="form-label">Tên bảng giá *</label>
+            <input type="text" class="form-control" placeholder="Nhập tên bảng giá (Tối đa 100 ký tự)">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mã bảng giá *</label>
+            <div style="display:flex;gap:8px;margin-bottom:8px">
+              <input type="text" class="form-control" value="BG-20260724-001" disabled>
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" checked> Tự động sinh mã
+            </label>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Thời gian áp dụng *</label>
+            <div class="form-row">
+              <div class="form-col"><input type="date" class="form-control"></div>
+              <div class="form-col"><input type="date" class="form-control"></div>
+            </div>
+          </div>
+          
+          <div class="form-group" style="background:#f9f9f9;padding:12px;border:1px solid #eee;border-radius:4px">
+            <div class="toggle-switch" style="margin-bottom:12px">
+              <div class="toggle-track on"><div class="toggle-knob"></div></div>
+              Bật khung giờ (Happy Hour)
+            </div>
+            <div class="form-row">
+              <div class="form-col">
+                <label class="form-label" style="font-size:11px">Giờ bắt đầu</label>
+                <input type="time" class="form-control" value="18:00">
+              </div>
+              <div class="form-col">
+                <label class="form-label" style="font-size:11px">Giờ kết thúc</label>
+                <input type="time" class="form-control" value="22:00">
+              </div>
+            </div>
+            <label class="form-label" style="font-size:11px;margin-top:12px">Ngày áp dụng</label>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <label class="checkbox-label"><input type="checkbox" checked>T2</label>
+              <label class="checkbox-label"><input type="checkbox" checked>T3</label>
+              <label class="checkbox-label"><input type="checkbox" checked>T4</label>
+              <label class="checkbox-label"><input type="checkbox" checked>T5</label>
+              <label class="checkbox-label"><input type="checkbox" checked>T6</label>
+              <label class="checkbox-label"><input type="checkbox" checked>T7</label>
+              <label class="checkbox-label"><input type="checkbox" checked>CN</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Nhóm khách hàng</label>
+            <select class="form-control">
+              <option>Tất cả khách hàng</option>
+              <option>Thành viên VIP</option>
+              <option>Sinh viên</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mô tả</label>
+            <textarea class="form-control" placeholder="Nhập mô tả ngắn..."></textarea>
+            <div class="form-hint" style="text-align:right">0/500</div>
+          </div>
+        </div>
+
+        <!-- Right Col: Items -->
+        <div class="col-right">
+          <div class="tabs">
+            <div class="tab active">Sản phẩm (2)</div>
+            <div class="tab">Combo (0)</div>
+            <div class="tab">Tùy chọn (0)</div>
+          </div>
+          
+          <div style="display:flex;justify-content:space-between;margin-bottom:16px">
+            <div></div>
+            <button class="btn-secondary">+ Thêm sản phẩm</button>
+          </div>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width:30%">Sản phẩm</th>
+                <th>Giá gốc</th>
+                <th style="width:160px">Phương thức</th>
+                <th style="width:120px">Điều chỉnh</th>
+                <th>Giá mới</th>
+                <th style="width:40px"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Bún Bò Huế</strong><br><small style="color:#888">SKU: BB-001</small></td>
+                <td>75.000đ</td>
+                <td>
+                  <select class="form-control" style="padding:4px 8px">
+                    <option>Giảm giá trị (đ)</option>
+                    <option>Chiết khấu (%)</option>
+                    <option>Nhập giá mới (đ)</option>
+                  </select>
+                </td>
+                <td><input type="text" class="form-control" style="padding:4px 8px;text-align:right" value="15.000"></td>
+                <td><strong>60.000đ</strong></td>
+                <td><button class="btn-icon" title="Xóa">✕</button></td>
+              </tr>
+              <tr>
+                <td><strong>Trà Đào Cam Sả</strong><br><small style="color:#888">SKU: TD-002</small></td>
+                <td>45.000đ</td>
+                <td>
+                  <select class="form-control" style="padding:4px 8px">
+                    <option>Chiết khấu (%)</option>
+                    <option>Giảm giá trị (đ)</option>
+                    <option>Nhập giá mới (đ)</option>
+                  </select>
+                </td>
+                <td><input type="text" class="form-control" style="padding:4px 8px;text-align:right" value="10"></td>
+                <td><strong>40.500đ</strong></td>
+                <td><button class="btn-icon">✕</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: add-items-modal -->
+  <div class="wf-screen" id="s3" style="background:#f0f0f0">
+    <div class="wf-screen-label">S3 · Modal chọn mục (add-items-modal)</div>
+    <div class="modal-overlay">
+      <div class="modal-box">
+        <div class="modal-hd">
+          <span>Thêm sản phẩm</span>
+          <button class="btn-icon">✕</button>
+        </div>
+        <div class="modal-body" style="padding-top:16px">
+          <div class="filter-bar" style="margin-bottom:12px">
+            <div class="search-box">
+              <input type="text" class="form-control" placeholder="Tìm theo tên hoặc mã SP...">
+            </div>
+            <select class="form-control" style="width:160px">
+              <option>Tất cả danh mục</option>
+              <option>Đồ ăn</option>
+              <option>Đồ uống</option>
+            </select>
+          </div>
+          
+          <div style="border:1px solid #eee;height:300px;overflow-y:auto">
+            <table class="data-table" style="margin:0;border-bottom:none">
+              <thead style="position:sticky;top:0;background:#fff;z-index:1">
+                <tr>
+                  <th style="width:40px"><input type="checkbox"></th>
+                  <th>Sản phẩm</th>
+                  <th>Mã SKU</th>
+                  <th>Giá gốc</th>
+                  <th style="width:80px"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="checkbox" disabled checked></td>
+                  <td>Bún Bò Huế</td>
+                  <td>BB-001</td>
+                  <td>75.000đ</td>
+                  <td><span class="badge badge-pending">Đã thêm</span></td>
+                </tr>
+                <tr style="background:#fcfcfc">
+                  <td><input type="checkbox" checked></td>
+                  <td>Phở Bò Kobe</td>
+                  <td>PB-002</td>
+                  <td>120.000đ</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>Cơm Tấm Sườn</td>
+                  <td>CT-001</td>
+                  <td>60.000đ</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>Trà Đá</td>
+                  <td>TD-001</td>
+                  <td>5.000đ</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:13px">
+            <span style="color:#888">Đã chọn: <strong>1</strong> sản phẩm</span>
+          </div>
+        </div>
+        <div class="modal-ft">
+          <button class="btn-secondary">Hủy</button>
+          <button class="btn-primary">Thêm vào bảng giá</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: delete-confirm-dialog -->
+  <div class="wf-screen" id="s4" style="background:#f0f0f0">
+    <div class="wf-screen-label">S4 · Dialog xác nhận xóa (delete-confirm-dialog)</div>
+    <div class="modal-overlay">
+      <div class="modal-box" style="width:400px">
+        <div class="modal-hd" style="border-bottom:none;padding-bottom:0">
+          <span>Xác nhận xóa bảng giá</span>
+        </div>
+        <div class="modal-body" style="font-size:13px;padding-top:12px">
+          Bạn có chắc chắn muốn xóa bảng giá <strong>Lễ Quốc Khánh 2/9</strong>? Hành động này không thể hoàn tác.
+          <br><br>
+          <span style="color:#888">Bảng giá này chứa 45 sản phẩm/combo/tùy chọn.</span>
+        </div>
+        <div class="modal-ft" style="background:#fff;border-top:none">
+          <button class="btn-secondary">Hủy</button>
+          <button class="btn-danger">Xóa</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end wf-rows -->
+
+<!-- DESC TABLE -->
+<div class="desc-section">
+  <h2>Bảng mô tả màn hình — Price List Management</h2>
+  <table class="wf-desc">
+    <thead>
+      <tr><th>#</th><th>Items</th><th>Control type</th><th>Data type</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr class="screen-hd"><td colspan="5">Screen 1: Danh sách bảng giá (price-list-listing)</td></tr>
+      <tr><td>1</td><td>Ô tìm kiếm</td><td>Textbox</td><td>Text</td><td>Tìm theo tên hoặc mã. Debounce 300ms.</td></tr>
+      <tr><td>2</td><td>Bộ lọc Trạng thái</td><td>Dropdown</td><td>Select</td><td>"Tất cả", "Chưa diễn ra", "Đang diễn ra", "Đã kết thúc". Cập nhật bảng ngay khi thay đổi.</td></tr>
+      <tr><td>3</td><td>Bảng danh sách bảng giá</td><td>Table</td><td>ReadOnly</td><td>Cột: Mã, Tên, Trạng thái (badge), Thời gian áp dụng, Nhóm KH, Số mục, Ngày tạo. Click vào row mở chi tiết. Phân trang 20/trang.</td></tr>
+      <tr><td>4</td><td>Badge Trạng thái</td><td>Label</td><td>ReadOnly</td><td>"Chưa diễn ra": xám, "Đang diễn ra": đen đậm, "Đã kết thúc": trắng viền xám.</td></tr>
+      <tr><td>5</td><td>Nút Thêm bảng giá</td><td>Button</td><td>Click</td><td>Điều kiện: có quyền MANAGE_PRICE_LIST (BR-01). Mở form tạo mới (S2).</td></tr>
+      <tr><td>6</td><td>Menu hành động (⋮)</td><td>Dropdown Menu</td><td>Click</td><td>Tùy chọn: "Xem chi tiết", "Sửa" (ẩn nếu kết thúc - BR-17), "Sao chép" (BR-14), "Xóa" (ẩn nếu đang diễn ra - BR-06).</td></tr>
+
+      <tr class="screen-hd"><td colspan="5">Screen 2: Form tạo/sửa bảng giá (price-list-form)</td></tr>
+      <tr><td>1</td><td>Tên bảng giá</td><td>Textbox</td><td>Text</td><td>Bắt buộc, tối đa 100 ký tự (Unicode). Unique (BR-02). E-PRICE-001 (Trống), E-PRICE-002 (Trùng tên).</td></tr>
+      <tr><td>2</td><td>Mã bảng giá</td><td>Textbox</td><td>Text</td><td>Bắt buộc. Nếu Tự động sinh mã = OFF, format ^[A-Za-z0-9_-]{3,20}$. Unique (BR-03). E-PRICE-003.</td></tr>
+      <tr><td>3</td><td>Tự động sinh mã</td><td>Checkbox</td><td>Check</td><td>ON: TextBox read-only, tự sinh BG-{YYYYMMDD}-{SEQ}. OFF: Cho nhập tay.</td></tr>
+      <tr><td>4</td><td>Thời gian bắt đầu / kết thúc</td><td>Date Picker</td><td>Text</td><td>Bắt buộc. Bắt đầu >= hiện tại. Kết thúc > Bắt đầu (BR-04). Không overlap thời gian với bảng giá khác (BR-05). Readonly khi Đang diễn ra (BR-13).</td></tr>
+      <tr><td>5</td><td>Bật khung giờ (Happy hour)</td><td>Toggle</td><td>Check</td><td>Mặc định OFF. Khi ON: Hiện chọn Giờ bắt đầu, Giờ kết thúc, Ngày áp dụng trong tuần. Readonly khi Đang diễn ra.</td></tr>
+      <tr><td>6</td><td>Giờ bắt đầu / kết thúc (HH)</td><td>Time Picker</td><td>Text</td><td>Kết thúc > Bắt đầu (BR-19). E-PRICE-005.</td></tr>
+      <tr><td>7</td><td>Ngày áp dụng trong tuần</td><td>Checkbox Group</td><td>Check</td><td>Tối thiểu 1 ngày (BR-19).</td></tr>
+      <tr><td>8</td><td>Nhóm khách hàng</td><td>Dropdown</td><td>Select</td><td>Chọn nhóm KH áp dụng (từ hệ thống). Readonly khi Đang diễn ra.</td></tr>
+      <tr><td>9</td><td>Mô tả</td><td>Text area</td><td>Text</td><td>Tùy chọn, tối đa 500 ký tự (BR-18). Hiển thị bộ đếm.</td></tr>
+      <tr><td>10</td><td>Tabs SP / Combo / Tùy chọn</td><td>Tab Group</td><td>Click</td><td>Chuyển đổi view hiển thị bảng item tương ứng.</td></tr>
+      <tr><td>11</td><td>Bảng Mục đã thêm</td><td>Table</td><td>Text</td><td>Chứa các dòng SP/Combo. Có chọn Phương thức (Trực tiếp, %, Giá trị) và Ô Điều chỉnh. Cột Giá mới tự tính (BR-11, BR-08).</td></tr>
+      <tr><td>12</td><td>Nút Xóa dòng (✕)</td><td>Button</td><td>Click</td><td>Loại SP/Combo khỏi danh sách.</td></tr>
+      <tr><td>13</td><td>Nút + Thêm sản phẩm/combo</td><td>Button</td><td>Click</td><td>Mở modal chọn item tương ứng (S3).</td></tr>
+      <tr><td>14</td><td>Nút Lưu bảng giá</td><td>Button</td><td>Click</td><td>Submit form. Validate >=1 mục (BR-09), không trùng lặp thời gian (BR-05). Báo lỗi inline nếu fail, trở về S1 nếu OK.</td></tr>
+      <tr><td>15</td><td>Nút Hủy / Back</td><td>Button</td><td>Click</td><td>Hủy tạo/sửa. Có dialog cảnh báo nếu form dirty.</td></tr>
+
+      <tr class="screen-hd"><td colspan="5">Screen 3: Modal chọn mục (add-items-modal)</td></tr>
+      <tr><td>1</td><td>Tìm kiếm & Lọc</td><td>Textbox/Drop</td><td>Text</td><td>Lọc danh sách item để chọn.</td></tr>
+      <tr><td>2</td><td>Danh sách mục chọn</td><td>Checkbox List</td><td>Check</td><td>Multi-select. Item đã thêm hiển thị badge "Đã thêm" + disabled checkbox (BR-07).</td></tr>
+      <tr><td>3</td><td>Nút Thêm vào bảng giá</td><td>Button</td><td>Click</td><td>Enabled khi >=1 checked. Đưa item vào danh sách form (S2) với giá mới mặc định = giá gốc.</td></tr>
+
+      <tr class="screen-hd"><td colspan="5">Screen 4: Dialog xác nhận xóa (delete-confirm-dialog)</td></tr>
+      <tr><td>1</td><td>Nội dung xác nhận</td><td>Label</td><td>ReadOnly</td><td>Hiển thị tên bảng giá và số lượng mục chứa trong đó.</td></tr>
+      <tr><td>2</td><td>Nút Xóa</td><td>Button</td><td>Click</td><td>Xóa hoàn toàn bảng giá. Disabled + spinner sau khi click. Thành công -> Đóng dialog, reload S1, Toast success.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
