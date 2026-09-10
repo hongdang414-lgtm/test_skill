@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thông tin nghiệp vụ - Render preview</title>
+<style>
+body { margin: 24px; font-family: Arial, sans-serif; color: #202124; background: #fff; }
+h2 { margin: 0 0 16px; font-size: 24px; }
+.business-info-table th, .business-info-table td { border: 1px solid #d0d7de; padding: 12px; }
+.business-info-table th { background: #eaf2fc; text-align: left; }
+</style>
+</head>
+<body>
+<h2>3. Thông tin nghiệp vụ</h2>
+<style>
+.business-info-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.business-info-table th,
+.business-info-table td {
+    vertical-align: top;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+}
+
+.business-info-table th:first-child,
+.business-info-table td:first-child {
+    width: 32%;
+}
+
+.business-info-table th:nth-child(2),
+.business-info-table td:nth-child(2) {
+    width: 68%;
+}
+
+.business-info-table td p {
+    margin: 0 0 8px;
+}
+
+.business-info-table td p:last-child {
+    margin-bottom: 0;
+}
+
+.business-info-table td ul,
+.business-info-table td ol {
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
+</style>
+
+<table class="business-info-table">
+    <thead>
+        <tr>
+            <th>Thông tin nghiệp vụ</th>
+            <th>Chi tiết đặc tả</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>1. Mục đích &amp; Phạm vi</strong></td>
+            <td>
+                <p>Cho phép <strong>Quản lý cửa hàng</strong> hoặc <strong>Chủ cửa hàng</strong> xem danh sách ca thuộc cửa hàng hiện tại, gồm cả ca <strong>Đang mở</strong> và <strong>Đã đóng</strong>, nhằm theo dõi ca đang hoạt động và tra cứu lịch sử ca.</p>
+                <p>Mỗi ca hiển thị tối thiểu: Mã ca, ngày mở ca, giờ mở–đóng, thời lượng, nhân viên quản lý ca, trạng thái và Chênh lệch. Ca Đã đóng hiển thị số Chênh lệch kèm nhãn Khớp/Thừa/Thiếu; ca Đang mở hiển thị <strong>“Chưa chốt”</strong>.</p>
+                <p>Danh sách được sắp xếp theo thời điểm mở mới nhất trước và hỗ trợ lọc theo <strong>Khoảng thời gian, Nhân viên, Trạng thái</strong>.</p>
+                <p><strong>Trong phạm vi:</strong> tải danh sách theo từng phần; hiển thị và lọc danh sách; xử lý loading, empty state và lỗi tải; xem lịch sử ca khi Quản lý ca đang Tắt.</p>
+                <p><strong>Ngoài phạm vi:</strong> xem chi tiết ca; Mở ca, Đóng ca hoặc Đóng ca hộ; đối soát hoặc sửa số liệu; xuất/in báo cáo; mọi nghiệp vụ offline.</p>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>2. Actors</strong></td>
+            <td>
+                <p><strong>Chính:</strong> Quản lý cửa hàng và Chủ cửa hàng — được xem toàn bộ danh sách ca của cửa hàng hiện tại.</p>
+                <p><strong>Không có quyền:</strong> Thu ngân, Nhân viên bán hàng và các vai trò nhân viên thông thường không được truy cập chức năng Danh sách ca.</p>
+                <p><strong>Hệ thống:</strong> POS/CMS Client hiển thị danh sách và bộ lọc; Server là nguồn dữ liệu chính thức về ca, trạng thái và quyền truy cập.</p>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>3. Pre-conditions</strong></td>
+            <td>
+                <ul>
+                    <li>Người dùng đã đăng nhập và đang làm việc trong ngữ cảnh một cửa hàng.</li>
+                    <li>Người dùng có vai trò Quản lý cửa hàng hoặc Chủ cửa hàng tại cửa hàng hiện tại.</li>
+                    <li>Thiết bị kết nối được server; use case không hỗ trợ dữ liệu danh sách offline.</li>
+                    <li>Trạng thái Bật/Tắt của Quản lý ca không phải điều kiện truy cập lịch sử. Khi Tắt, dữ liệu ca cũ vẫn được xem ở chế độ chỉ đọc.</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>4. Happy Path</strong></td>
+            <td>
+                <ol>
+                    <li>Quản lý hoặc Chủ cửa hàng mở chức năng <strong>Danh sách ca</strong>.</li>
+                    <li>Hệ thống kiểm tra quyền và tải danh sách ca của cửa hàng với bộ lọc mặc định.</li>
+                    <li>Hệ thống trả về cả ca <strong>Đang mở</strong> và <strong>Đã đóng</strong>, sắp xếp giảm dần theo thời điểm mở.</li>
+                    <li>Mỗi dòng/thẻ hiển thị Mã ca, ngày mở, giờ mở–đóng, thời lượng, nhân viên quản lý ca, trạng thái và Chênh lệch/“Chưa chốt”.</li>
+                    <li>Người dùng thay đổi Khoảng thời gian, Nhân viên hoặc Trạng thái.</li>
+                    <li>Hệ thống hiển thị các ca thỏa mãn đồng thời mọi bộ lọc đang áp dụng.</li>
+                    <li>Người dùng xóa bộ lọc; hệ thống khôi phục điều kiện mặc định và tải lại danh sách.</li>
+                </ol>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>5. Alternative Flow</strong></td>
+            <td>
+                <p><strong>AF-01 — Chưa có ca:</strong> hiển thị <strong>“Chưa có ca nào”</strong> và mô tả <strong>“Các ca phát sinh tại cửa hàng sẽ hiển thị tại đây.”</strong> Không gợi ý Mở ca khi Quản lý ca đang Tắt.</p>
+                <p><strong>AF-02 — Không có kết quả lọc:</strong> hiển thị <strong>“Không tìm thấy ca phù hợp”</strong>, hướng dẫn thay đổi bộ lọc và hành động <strong>Xóa bộ lọc</strong>.</p>
+                <p><strong>AF-03 — Quản lý ca đang Tắt:</strong> vẫn cho phép xem toàn bộ lịch sử ca ở chế độ chỉ đọc; không cung cấp thao tác Mở ca hoặc Đóng ca.</p>
+                <p><strong>AF-04 — Ca Đang mở:</strong> giờ đóng hiển thị “—”; thời lượng tính đến hiện tại; Chênh lệch hiển thị <strong>“Chưa chốt”</strong>, không hiển thị 0.</p>
+                <p><strong>AF-05 — Ca kéo dài qua ngày:</strong> ca chỉ xuất hiện một lần và thuộc nhóm <strong>ngày mở ca</strong>. Khi lọc, ca vẫn xuất hiện nếu khoảng tồn tại của ca giao với khoảng thời gian được chọn.</p>
+                <p><strong>AF-06 — Xóa bộ lọc:</strong> xóa đồng thời Khoảng thời gian, Nhân viên và Trạng thái, sau đó tải lại dữ liệu mặc định.</p>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>6. Lỗi và edge cases</strong></td>
+            <td>
+                <p><strong>E-01 — Không có quyền:</strong> từ chối truy cập và không trả dữ liệu ca.</p>
+                <p><strong>E-02 — Không tải được dữ liệu:</strong> giữ bộ lọc đã chọn, hiển thị <strong>“Không thể tải danh sách ca. Vui lòng thử lại.”</strong> và nút <strong>Thử lại</strong>.</p>
+                <p><strong>E-03 — Khoảng thời gian không hợp lệ:</strong> không áp dụng bộ lọc; báo lỗi tại ngày kết thúc.</p>
+                <p><strong>E-04 — Nhân viên đã ngừng làm việc:</strong> ca lịch sử vẫn hiển thị tên được lưu tại ca.</p>
+                <p><strong>E-05 — Ca vừa được đóng:</strong> lần tải lại tiếp theo cập nhật dòng hiện có sang Đã đóng, bổ sung giờ đóng, thời lượng và Chênh lệch đã chốt; không tạo dòng mới.</p>
+                <p><strong>E-06 — Thiếu dữ liệu thời gian:</strong> không tự suy đoán; hiển thị “—” tại trường thiếu và ghi nhận lỗi dữ liệu để xử lý vận hành.</p>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>7. Quy ước ca qua ngày và lọc thời gian</strong></td>
+            <td>
+                <p>Danh sách nhóm ca theo <strong>ngày mở ca</strong>, không theo ngày đóng. Một ca kéo dài qua ngày không bị tách thành nhiều dòng.</p>
+                <p>Bộ lọc Khoảng thời gian dùng nguyên tắc <strong>giao khoảng</strong>: ca được hiển thị nếu khoảng tồn tại từ lúc mở đến lúc đóng có giao với khoảng được chọn. Với ca Đang mở, điểm cuối khoảng tồn tại là thời điểm hiện tại.</p>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>8. Chỉ số tiền trên danh sách</strong></td>
+            <td>
+                <p>Hiển thị duy nhất chỉ số <strong>Chênh lệch = Tiền mặt cuối ca − Tiền mặt kỳ vọng</strong>.</p>
+                <p>Ca <strong>Đã đóng:</strong> hiển thị số tiền với label <strong>Chênh lệch</strong> và nhãn <strong>Khớp / Thừa / Thiếu</strong>.</p>
+                <p>Ca <strong>Đang mở:</strong> hiển thị <strong>“Chưa chốt”</strong>, không hiển thị 0.</p>
+                <p>Không hiển thị Doanh thu ca hoặc Tiền cuối ca trên danh sách; không hiển thị bất kỳ số tiền nào thiếu label.</p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
